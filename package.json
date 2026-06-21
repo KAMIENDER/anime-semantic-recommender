@@ -1,0 +1,51 @@
+{
+  "name": "anime-semantic-recommender",
+  "version": "0.1.0",
+  "description": "Chinese-first semantic anime recommendation Codex skill and experimental TypeScript CLI grounded in Bangumi/AniList sources.",
+  "private": false,
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "anime",
+    "anime-recommendation",
+    "recommendation-system",
+    "semantic-recommendation",
+    "codex-skill",
+    "llm",
+    "bangumi",
+    "anilist",
+    "typescript",
+    "chinese"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KAMIENDER/anime-semantic-recommender.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KAMIENDER/anime-semantic-recommender/issues"
+  },
+  "homepage": "https://github.com/KAMIENDER/anime-semantic-recommender#readme",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "bin": {
+    "anime-recommend": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "NODE_OPTIONS=--no-warnings tsx src/cli.ts",
+    "recommend": "NODE_OPTIONS=--no-warnings tsx src/cli.ts recommend",
+    "search": "NODE_OPTIONS=--no-warnings tsx src/cli.ts search",
+    "feedback": "NODE_OPTIONS=--no-warnings tsx src/cli.ts feedback",
+    "profile": "NODE_OPTIONS=--no-warnings tsx src/cli.ts profile",
+    "smoke": "NODE_OPTIONS=--no-warnings tsx src/cli.ts recommend \"想看像芙莉莲那种，有余韵但不要王道热血\" --limit 5 --no-network"
+  },
+  "dependencies": {
+    "openai": "^6.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
