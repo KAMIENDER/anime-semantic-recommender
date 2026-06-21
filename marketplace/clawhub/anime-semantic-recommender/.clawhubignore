@@ -1,0 +1,10 @@
+node_modules/
+dist/
+data/
+.git/
+.env
+.env.*
+package-lock.json
+package.json
+src/
+tsconfig.json
