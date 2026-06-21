@@ -34,7 +34,17 @@ npx clawhub --workdir ~/.codex --dir skills install anime-semantic-recommender
 npx clawhub --workdir ~/.codex --dir skills update anime-semantic-recommender
 ```
 
-### 方式二：从 GitHub clone
+### 方式二：用 Skills CLI 安装
+
+这个项目也兼容 `find-skills` 使用的 open agent skills 生态，可以直接从 GitHub 安装：
+
+```bash
+npx skills add KAMIENDER/anime-semantic-recommender -g -y --agent codex
+```
+
+这个方式不需要手动 clone 仓库，但是否能在 `npx skills find` 或 skills.sh 搜索结果里出现，取决于 skills.sh 的索引。
+
+### 方式三：从 GitHub clone
 
 如果你想查看源码、修改文档或跟踪 GitHub 仓库，也可以直接 clone 到 Codex 的 skills 目录：
 
