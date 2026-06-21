@@ -10,6 +10,40 @@
 - 一套轻量的语义推荐方法论：关系模式、情绪口感、叙事节奏、故事核心、避雷点。
 - 一个实验性的本地 CLI：可以缓存 Bangumi/AniList 元数据、记录用户反馈、测试推荐启发式规则。
 
+## 安装 Skill
+
+如果你只是想让 Codex 学会这套动漫推荐方法，安装 Skill 即可，不需要运行本地 CLI。
+
+### 方式一：Codex 本地安装
+
+```bash
+mkdir -p ~/.codex/skills
+git clone https://github.com/KAMIENDER/anime-semantic-recommender.git ~/.codex/skills/anime-semantic-recommender
+```
+
+然后重启 Codex，直接这样问：
+
+```text
+用 anime-semantic-recommender 推荐几部像芙莉莲那样有余韵、但不要王道热血的动画。
+```
+
+更新已安装的 Skill：
+
+```bash
+cd ~/.codex/skills/anime-semantic-recommender
+git pull
+```
+
+### 方式二：从 ClawHub 安装
+
+这个 Skill 也发布到了 ClawHub，可以安装到 Codex 的 skills 目录：
+
+```bash
+npx clawhub install anime-semantic-recommender --workdir ~/.codex --dir skills
+```
+
+安装后同样需要重启 Codex。
+
 ## 推荐思路
 
 传统标签推荐很容易停在“同为校园恋爱”“同为奇幻冒险”这一层，但用户真正想找的往往更细：
@@ -41,7 +75,9 @@
 
 LLM 可以负责语义判断和推荐解释，但作品事实应尽量来自高质量数据源。
 
-## 快速开始
+## 实验 CLI 快速开始
+
+下面是实验性本地 CLI 的用法。它不是使用 Skill 的必要步骤。
 
 要求：
 
