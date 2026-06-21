@@ -1,66 +1,66 @@
 ---
 name: anime-semantic-recommender
-description: Use for Chinese-first, source-grounded anime recommendations when the user asks for anime similar to something they watched, describes nuanced taste, wants feedback-driven refinement, or cares about story texture, romance dynamics, emotional aftertaste, pacing, relationship patterns, and avoidances rather than only genre tags.
+description: 用于中文优先、基于高质量数据源的动漫推荐。当用户想找类似某部作品的动画，描述细腻口味，希望根据反馈逐轮收窄，或关心故事质感、恋爱关系、情绪余韵、节奏、人物关系和避雷点，而不是只按题材标签推荐时使用。
 ---
 
-# Anime Semantic Recommender
+# 中文语义动漫推荐
 
-Default to a lightweight taste-analysis workflow. Do not start with the local CLI unless the user explicitly asks to use the experimental local recommender, cache, Bangumi/AniList fetch, or feedback database.
+默认使用轻量口味分析流程。除非用户明确要求测试本地推荐器、缓存、Bangumi/AniList 抓取或反馈数据库，否则不要先调用实验性 CLI。
 
-## Mandatory Source Grounding
+## 强制数据源核实
 
-If browsing/searching is used, or if factual accuracy affects the recommendation, build a small source packet before taste matching. Do this before generic web search.
+只要使用搜索/浏览，或者作品事实会影响推荐结果，就必须先整理一个小的 source packet，再做口味匹配。这个步骤要发生在泛搜索之前。
 
-Preferred source order:
+优先数据源顺序：
 
-1. Official anime / publisher / streaming pages for release status, adaptation status, staff, cast, episode count, and availability.
-2. Bangumi for Chinese titles, Chinese ACG context, ratings, tags, relationships between entries, and community metadata.
-3. AniList for structured tags, format, popularity, cross-language titles, and API-friendly metadata.
-4. MAL/Jikan for broader international popularity and fallback metadata.
-5. TMDb only for posters, images, and general media metadata; do not use it as the main anime taste source.
+1. 官方动画 / 出版社 / 流媒体页面：播出状态、改编状态、staff、cast、集数、版权上线情况。
+2. Bangumi：中文名、中文 ACG 语境、评分、标签、条目关系、社区元数据。
+3. AniList：结构化标签、格式、人气、跨语种标题、API 友好元数据。
+4. MAL/Jikan：更广的国际热度和兜底元数据。
+5. TMDb：只用于海报、图片和通用媒体资料，不作为动漫口味判断主源。
 
-Rules:
+规则：
 
-- Search engines are only discovery tools for finding the source pages above.
-- Do not treat search snippets, generic SEO pages, scraped synopsis sites, uncredited blogs, or AI-generated listicles as authoritative.
-- For the anchor work, check at least Bangumi or AniList when the exact work is not already clear; also check official sources when the work is current, obscure, or adaptation status matters.
-- If the preferred sources are unavailable or unreachable, say "未能从指定高质量源核实" and separate verified facts from memory/inference.
-- When reporting the process, name the source class actually checked, such as "先看 Bangumi/AniList/官方信息", rather than saying only "搜索了网页".
+- 搜索引擎只能作为入口发现工具，用来找到上面的高质量源页面。
+- 不要把搜索摘要、泛 SEO 页面、搬运简介站、无来源博客、AI 生成榜单当权威事实。
+- 对锚点作品，如果作品本身不够明确，至少查 Bangumi 或 AniList；如果作品很新、冷门，或改编状态会影响推荐，还要查官方源。
+- 如果高质量源不可用或无法访问，要明确说“未能从指定高质量源核实”，并区分已核实事实和记忆/推断。
+- 描述过程时要说清楚查的是哪类源，例如“先看 Bangumi/AniList/官方信息”，不能只说“搜索了网页”。
 
-## Default Workflow
+## 默认流程
 
-1. Identify the anchor work.
-   - What did the user watch/read?
-   - Is it anime, manga, light novel, web novel, or adaptation?
-   - If the exact work is obscure or current, verify briefly before relying on facts.
+1. 识别锚点作品。
+   - 用户看过/读过的是什么？
+   - 它是动画、漫画、轻小说、网文，还是改编作品？
+   - 如果作品很新、冷门或信息不明确，先简短核实事实。
 
-2. Extract the liked experience, not just tags.
-   - Relationship pattern: friends-to-lovers, girl leads, slow-burn, group romance, etc.
-   - Emotional texture: sweet, shy, low-pressure, wistful, funny, tense.
-   - Narrative engine: daily scenes, secrets, club activity, cohabitation, rivalry.
-   - Pacing: slow tease, fast confession, episodic, strong plot.
-   - Avoidances: harem, fanservice, heavy drama, love triangle, long misunderstandings.
+2. 抽取用户喜欢的体验，而不是只抽标签。
+   - 关系模式：朋友到恋人、女主主动、慢热暧昧、群像恋爱等。
+   - 情绪口感：甜、害羞、低压力、怅然、搞笑、紧张。
+   - 叙事引擎：日常互动、秘密、社团、同居、竞争关系。
+   - 节奏：慢慢暧昧、快速告白、单元剧、强主线。
+   - 避雷点：后宫、卖肉、重 drama、党争、误会拖太久。
 
-3. Recommend in layers.
-   - Direct matches: closest same experience.
-   - Adjacent matches: similar emotional or relationship pattern with a different surface.
-   - Stretch picks: only if useful, and explain why they are a stretch.
+3. 分层推荐。
+   - 直球相似：核心体验最接近。
+   - 相邻相似：情绪或关系模式相似，但表面题材不同。
+   - 拓展尝试：只有在有价值时给，并说明为什么是 stretch pick。
 
-4. Explain every pick.
-   - Say exactly what matches the user’s anchor.
-   - Say what differs.
-   - Include caveats when the fit is uncertain.
+4. 每个推荐都要解释。
+   - 明确说它和锚点作品像在哪里。
+   - 说清哪里不同。
+   - 匹配不确定时要给 caveat。
 
-5. Use feedback immediately.
-   - "Seen" means do not recommend it again.
-   - "Too harem" lowers multi-girl/party-war picks.
-   - "Too sweet" adds realism or bittersweetness.
-   - "Too slow" raises plot momentum.
-   - "These are all watched" moves deeper into mid-popularity and older titles.
+5. 立即使用用户反馈。
+   - “看过”意味着不要再推荐这部。
+   - “太后宫”降低多女主、党争、卖肉权重。
+   - “太甜”加入现实感或轻微苦味。
+   - “太慢”提高剧情推进权重。
+   - “这些都看过”下潜到中腰部、旧作或原作路线。
 
-## Output Shape
+## 输出形态
 
-For normal requests, keep the answer compact:
+普通推荐请求保持紧凑：
 
 ```text
 你喜欢的可能是：...
@@ -70,11 +70,11 @@ For normal requests, keep the answer compact:
    不同/注意：...
 ```
 
-Avoid pretending to know the user's watch history. Mix popular, mid-tier, and one optional exploration pick unless the user asks otherwise.
+不要假装知道用户的观看历史。除非用户特别要求，否则混合热门、中腰部和一个可选探索项。
 
-## Experimental CLI
+## 实验性 CLI
 
-The repo includes an experimental local recommender. Use it only when the user wants to test the implementation:
+仓库包含一个实验性本地推荐器。只有用户想测试实现时才使用：
 
 ```bash
 npm run recommend -- "想看像芙莉莲那种，有余韵但不要王道热血"
@@ -83,9 +83,9 @@ npm run feedback -- "少女终末旅行" -- --seen --liked --comment "方向对"
 npm run profile
 ```
 
-Current limitation: the local seed catalog is small and biased toward "余韵/旅途/治愈/世界观" examples. It is not yet reliable for every genre, especially school romance/light-novel romance, unless that catalog is expanded.
+当前限制：本地种子库较小，偏向“余韵/旅途/治愈/世界观”例子。除非继续扩充 catalog，否则它还不能可靠覆盖所有类型，尤其是校园恋爱和轻小说恋爱。
 
-## Reference
+## 参考
 
-For the lightweight methodology, see `docs/simple-methodology.md`.
-For the heavier experimental architecture, see `docs/technical-plan.md`.
+轻量方法论见 `docs/simple-methodology.md`。
+更重的实验性工程方案见 `docs/technical-plan.md`。

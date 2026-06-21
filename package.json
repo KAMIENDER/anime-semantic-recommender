@@ -1,7 +1,7 @@
 {
   "name": "anime-semantic-recommender",
   "version": "0.1.0",
-  "description": "Chinese-first semantic anime recommendation Codex skill and experimental TypeScript CLI grounded in Bangumi/AniList sources.",
+  "description": "中文优先的语义动漫推荐 Codex Skill 和实验性 TypeScript CLI，优先参考 Bangumi/AniList 等高质量数据源。",
   "private": false,
   "type": "module",
   "license": "MIT",
@@ -15,7 +15,10 @@
     "bangumi",
     "anilist",
     "typescript",
-    "chinese"
+    "chinese",
+    "中文",
+    "动漫推荐",
+    "语义推荐"
   ],
   "repository": {
     "type": "git",

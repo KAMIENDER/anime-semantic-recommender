@@ -1,34 +1,53 @@
-# Anime Semantic Recommender
+# 中文语义动漫推荐
 
-Chinese-first anime recommendation methodology, Codex skill, and experimental TypeScript CLI.
+一个中文优先的动漫推荐方法论、Codex Skill 和实验性 TypeScript CLI。
 
-This project is intentionally lightweight. The default recommendation path is not a big vector database or a top-list scraper; it is a repeatable workflow for understanding what a viewer liked, grounding factual claims in anime-specific sources, and then using semantic reasoning to explain why each recommendation fits.
+这个项目当前不是一个大型推荐系统，也不是简单的热门榜单抓取器。它更像一套可复用的推荐流程：先理解用户真正喜欢的观看体验，再用 Bangumi、AniList 等高质量数据源核实作品事实，最后用 LLM 的语义能力解释“为什么这部作品适合你”。
 
-## What This Is
+## 这个项目是什么
 
-- A Codex skill for Chinese-first anime recommendations.
-- A compact methodology for semantic taste analysis: relationship pattern, emotional texture, pacing, narrative engine, and avoidances.
-- An experimental local CLI that can cache Bangumi/AniList metadata, record feedback, and test recommendation heuristics.
+- 一个面向中文用户的 Codex 动漫推荐 Skill。
+- 一套轻量的语义推荐方法论：关系模式、情绪口感、叙事节奏、故事核心、避雷点。
+- 一个实验性的本地 CLI：可以缓存 Bangumi/AniList 元数据、记录用户反馈、测试推荐启发式规则。
 
-## Source Policy
+## 推荐思路
 
-When facts matter, the recommender should not rely on generic search snippets or SEO listicles. Preferred source order:
+传统标签推荐很容易停在“同为校园恋爱”“同为奇幻冒险”这一层，但用户真正想找的往往更细：
 
-1. Official anime, publisher, or streaming pages.
-2. Bangumi for Chinese titles, Chinese ACG context, tags, ratings, and related entries.
-3. AniList for structured tags, format, popularity, and cross-language titles.
-4. MAL/Jikan as broader international metadata fallback.
-5. TMDb only for posters and general media metadata.
+- “像芙莉莲那种有时间流逝后的余韵，但不要王道热血”
+- “想看女主主动靠近男主、低压力、慢慢变甜的校园恋爱”
+- “这些热门我大多看过，能不能往中腰部和旧作里找”
 
-Recommendation explanations can use LLM semantic judgment, but factual fields should come from high-quality sources when possible.
+所以默认流程是：
 
-## Quick Start
+```text
+理解用户喜欢的体验
+  -> 抽取相似维度
+  -> 用高质量数据源确认事实和候选边界
+  -> 分层推荐
+  -> 解释像在哪里、哪里不同、可能不适合谁
+  -> 根据用户反馈继续收窄
+```
 
-Requirements:
+## 数据源原则
 
-- Node.js 22.5 or newer.
-- npm.
-- Optional: `OPENAI_API_KEY` for LLM profile generation and reranking.
+只要事实会影响推荐，就不要依赖搜索引擎摘要、SEO 榜单、搬运简介站或 AI 生成榜单。优先级是：
+
+1. 官方动画、出版社、流媒体页面：播出状态、改编状态、制作方、集数、staff、cast、版权上线情况。
+2. Bangumi：中文名、中文 ACG 语境、标签、评分、收藏、条目关系、社区热度。
+3. AniList：结构化标签、格式、人气、跨语种标题、API 友好元数据。
+4. MAL/Jikan：国际热度和补充元数据。
+5. TMDb：海报、图片和通用媒体资料，不作为动漫口味判断主源。
+
+LLM 可以负责语义判断和推荐解释，但作品事实应尽量来自高质量数据源。
+
+## 快速开始
+
+要求：
+
+- Node.js 22.5 或更新版本。
+- npm。
+- 可选：设置 `OPENAI_API_KEY` 后启用 LLM 画像生成和精排。
 
 ```bash
 npm install
@@ -36,19 +55,19 @@ npm run build
 npm run smoke
 ```
 
-Try a local recommendation:
+试一次本地推荐：
 
 ```bash
 npm run recommend -- "想看像芙莉莲那种，有余韵但不要王道热血" -- --limit 5 --no-network
 ```
 
-Search source metadata:
+搜索数据源元信息：
 
 ```bash
 npm run search -- "葬送的芙莉莲"
 ```
 
-Record feedback:
+记录反馈：
 
 ```bash
 npm run feedback -- "少女终末旅行" -- --seen --liked --comment "方向对"
@@ -57,20 +76,20 @@ npm run profile
 
 ## Codex Skill
 
-The skill entrypoint is [SKILL.md](SKILL.md). It tells Codex to:
+Skill 入口是 [SKILL.md](SKILL.md)。它要求 Codex：
 
-- Start from lightweight taste analysis.
-- Ground factual claims in official sources, Bangumi, AniList, MAL/Jikan, or TMDb before generic web search.
-- Explain each recommendation by "where it matches", "where it differs", and "who should avoid it".
-- Use feedback immediately instead of repeating the same popular recommendations.
+- 默认先做轻量口味分析，而不是直接调用本地 CLI。
+- 如果用了搜索/浏览，先查官方、Bangumi、AniList、MAL/Jikan 或 TMDb，不把搜索摘要当事实。
+- 每个推荐都解释“像在哪里”“哪里不同”“可能不适合谁”。
+- 用户反馈后立刻调整方向，避免反复推荐同一批热门作品。
 
-For the shorter method reference, see [docs/simple-methodology.md](docs/simple-methodology.md).
-For the heavier implementation plan, see [docs/technical-plan.md](docs/technical-plan.md).
+更短的方法论见 [docs/simple-methodology.md](docs/simple-methodology.md)。
+更完整的工程化方案见 [docs/technical-plan.md](docs/technical-plan.md)。
 
-## Current Status
+## 当前状态
 
-This is an early personal-use MVP. The local seed catalog is small and biased toward works with quiet, reflective, healing, journey, or worldbuilding texture. The CLI is useful for experimentation, but the skill methodology is the main artifact right now.
+这是一个早期个人使用 MVP。当前本地种子库很小，偏向“余韵、旅途、治愈、世界观、克制叙事”这类作品。CLI 适合验证思路是否能工程化，但现阶段最重要的产物仍然是中文推荐方法论和 Codex Skill。
 
-## License
+## 许可证
 
 MIT
