@@ -14,12 +14,13 @@
 
 如果你只是想让 Codex 学会这套动漫推荐方法，安装 Skill 即可，不需要运行本地 CLI。
 
-### 方式一：Codex 本地安装
+### 方式一：Codex 一行安装
 
 ```bash
-mkdir -p ~/.codex/skills
-git clone https://github.com/KAMIENDER/anime-semantic-recommender.git ~/.codex/skills/anime-semantic-recommender
+npx clawhub --workdir ~/.codex --dir skills install anime-semantic-recommender
 ```
+
+这会通过 ClawHub 把 Skill 安装到 Codex 的 `~/.codex/skills` 目录，不需要 clone 仓库。
 
 然后重启 Codex，直接这样问：
 
@@ -27,19 +28,26 @@ git clone https://github.com/KAMIENDER/anime-semantic-recommender.git ~/.codex/s
 用 anime-semantic-recommender 推荐几部像芙莉莲那样有余韵、但不要王道热血的动画。
 ```
 
-更新已安装的 Skill：
+更新这个安装方式得到的 Skill：
+
+```bash
+npx clawhub --workdir ~/.codex --dir skills update anime-semantic-recommender
+```
+
+### 方式二：从 GitHub clone
+
+如果你想查看源码、修改文档或跟踪 GitHub 仓库，也可以直接 clone 到 Codex 的 skills 目录：
+
+```bash
+mkdir -p ~/.codex/skills
+git clone https://github.com/KAMIENDER/anime-semantic-recommender.git ~/.codex/skills/anime-semantic-recommender
+```
+
+更新 clone 方式安装的 Skill：
 
 ```bash
 cd ~/.codex/skills/anime-semantic-recommender
 git pull
-```
-
-### 方式二：从 ClawHub 安装
-
-这个 Skill 也发布到了 ClawHub，可以安装到 Codex 的 skills 目录：
-
-```bash
-npx clawhub install anime-semantic-recommender --workdir ~/.codex --dir skills
 ```
 
 安装后同样需要重启 Codex。
